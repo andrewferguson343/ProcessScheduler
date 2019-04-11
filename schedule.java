@@ -46,7 +46,6 @@ public class schedule {
 			System.out.println("  Start: " + processes[i].processStartTime);
 			System.out.println("  End: " + processes[i].processEndTime);
 			System.out.println("  Intitial wait: " + CalculateInitialWaitTime(processes[i]));
-			System.out.println("  Total wait: " + (processes[i].processTotalWaitTime + CalculateInitialWaitTime(processes[i])));
 			System.out.println("  Turnaround: " + calculateTurnaroundTime(processes[i]));			
 		}
 		
@@ -60,7 +59,7 @@ public class schedule {
 		//if process does not have a start time, set it to the cpu clock
 		// for every tick increase cpu clock by 1, decrease process service time
 		// if process ends before time quantum, break and start a new process 
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < 2; i++)
 		{	
 			cpuClock++;
 			if(newProcess.processStartTime == -1)
