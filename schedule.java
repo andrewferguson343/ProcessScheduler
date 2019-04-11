@@ -1,3 +1,4 @@
+import java.util.Random;
 
 public class schedule {
 	//Andrew Ferguson Operating Systems
@@ -9,12 +10,13 @@ public class schedule {
 		int processesComplete = 0;
 		
 		//create array of processes
-		process[] processes = new process[5];		
-		processes[0] = new process(0, 75);
-		processes[1] = new process(40, 10);
-		processes[2] = new process(25, 10);
-		processes[3] = new process(20, 80);
-		processes[4] = new process(45, 85);
+		process[] processes = new process[100];		
+		int[] serviceTimes = GenerateServiceTime();
+		int[] arrivalTimes = GenerateArrivalTime();
+		for (int i = 0; i < processes.length; i++)
+		{
+			processes[i] = new process(arrivalTimes[i], serviceTimes[i]);
+		}
 		
 		// While there are still incomplete processes, run
 		while(processesComplete < processes.length - 1)
@@ -31,7 +33,10 @@ public class schedule {
 					{						
 						processesComplete++;
 					}
-				}				
+				}
+				else {
+					cpuClock++;
+				}
 			}
 		}
 		//Print out final information
@@ -55,8 +60,9 @@ public class schedule {
 		//if process does not have a start time, set it to the cpu clock
 		// for every tick increase cpu clock by 1, decrease process service time
 		// if process ends before time quantum, break and start a new process 
-		for (int i = 0; i < 15; i++)
-		{			
+		for (int i = 0; i < 10; i++)
+		{	
+			cpuClock++;
 			if(newProcess.processStartTime == -1)
 			{
 				newProcess.processStartTime = cpuClock;
@@ -108,5 +114,37 @@ public class schedule {
 	{
 		return finishedProcess.processStartTime - finishedProcess.processArrivalTime;
 	}
+	
+	public static int[] GenerateArrivalTime() {  
+        int[] arrivalTimes = new int[100];
+        arrivalTimes[0] = 0;
+        int[] interArrivalTimes = new int[100];
+        Random rand = new Random(); 
+        //Generate 100 interarrival times
+        for(int i = 0; i < arrivalTimes.length; i++)
+        {
+            interArrivalTimes[i] = 4 +  rand.nextInt(4);               
+
+        }
+        double totalInter = 0;
+        for(int i = 1; i < interArrivalTimes.length; i++)
+        {
+            arrivalTimes[i] = arrivalTimes[i - 1] + interArrivalTimes[i];          
+        }       
+
+       return arrivalTimes;
+
+     }
+	public static int[] GenerateServiceTime() {		   
+        int[] serviceTimes = new int[100];        
+        Random rand = new Random(); 
+        //Generate 100 interarrival times
+        for(int i = 0; i < serviceTimes.length; i++)
+        {
+            serviceTimes[i] = 2 + rand.nextInt(3);      
+        }
+        return serviceTimes;
+
+     }	
 }
 
